@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -34,3 +34,21 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          
+      - name: deploy-via-scp
+        # You may pin to the exact commit or the version.
+        # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
+        uses: horochx/deploy-via-scp@v1.0.1
+        with:
+            # Local file path
+           local: ./
+           # Remote file path
+           remote: ./
+           # Remote server address
+           host: 104.248.238.95
+           # Remote server port
+           # port: # optional, default is 22
+           # Remote server user
+           user: john
+           # Remote server private key
+           # key: 
