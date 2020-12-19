@@ -51,4 +51,4 @@ jobs:
            # Remote server user
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
-           # key: 
+           key: ${{ secrets.JOHN_KEY }}
