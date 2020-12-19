@@ -49,6 +49,6 @@ jobs:
            # Remote server port
            # port: # optional, default is 22
            # Remote server user
-           user: john
+           user: ${{ secrets.SSH_USER }}
            # Remote server private key
            # key: 
