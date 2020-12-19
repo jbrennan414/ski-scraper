@@ -47,7 +47,7 @@ jobs:
            # Remote server address
            host: 104.248.238.95
            # Remote server port
-           # port: # optional, default is 22
+           port: 22
            # Remote server user
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
