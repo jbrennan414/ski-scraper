@@ -41,9 +41,9 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
             # Local file path
-           local: .~
+           local: /
            # Remote file path
-           remote: .~
+           remote: /
            # Remote server address
            host: 104.248.3.8
            # Remote server port
