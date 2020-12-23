@@ -42,8 +42,3 @@ jobs:
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
            key: ${{ secrets.KEY }}
-
-      - name: Install Dependencies
-        run: npm i 
-      - name: Restart PM2
-        run: pm2 restart index.js
