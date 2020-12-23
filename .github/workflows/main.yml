@@ -43,12 +43,12 @@ jobs:
             # Local file path
            local: ./
            # Remote file path
-           remote: ./
+           remote: .~
            # Remote server address
-           host: 104.248.238.95
+           host: 104.248.3.8
            # Remote server port
            port: 22
            # Remote server user
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
-           key: ${{ secrets.JOHN_KEY }}
+           key: ${{ secrets.KEY }}
