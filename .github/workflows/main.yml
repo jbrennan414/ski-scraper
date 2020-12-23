@@ -48,7 +48,7 @@ jobs:
             # Local file path
            local: worker/
            # Remote file path
-           remote: /okdoweseethistsete
+           remote: ~/
            # Remote server address
            host: 104.248.3.8
            # Remote server port
