@@ -1,8 +1,5 @@
 var fetch = require('node-fetch');
 
-const {promisify} = require('util');
-const setAsync = promisify(client.set).bind(client);
-
 const baseURL = 'https://ikon-data.herokuapp.com/data'
 
 async function fetchWinterPark(){
