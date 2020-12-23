@@ -35,20 +35,25 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           
+      - name: View Directory
+        run: |
+          cd /
+          ls -la
+          
       - name: deploy-via-scp
         # You may pin to the exact commit or the version.
         # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
         uses: horochx/deploy-via-scp@v1.0.1
         with:
             # Local file path
-           local: ./
+           local: worker/
            # Remote file path
-           remote: ./
+           remote: /okdoweseethistsete
            # Remote server address
-           host: 104.248.238.95
+           host: 104.248.3.8
            # Remote server port
            port: 22
            # Remote server user
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
-           key: ${{ secrets.JOHN_KEY }}
+           key: ${{ secrets.KEY }}
