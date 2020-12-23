@@ -45,4 +45,4 @@ jobs:
 
       - name: Start pm2 process
         run: |
-          echo "Starting pm2 process"
+          pm2 restart index.js
