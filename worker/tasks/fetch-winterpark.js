@@ -1,12 +1,11 @@
 var fetch = require('node-fetch');
-var redis = require('redis'), client = redis.createClient();
 
 const {promisify} = require('util');
 const setAsync = promisify(client.set).bind(client);
 
 const baseURL = 'https://ikon-data.herokuapp.com/data'
 
-async function fetchGithub(){
+async function fetchWinterPark(){
 
     const allData = [];
 
@@ -26,11 +25,11 @@ async function fetchGithub(){
         }
     }
 
-    // set in redis
-    const success = await setAsync('ski-scraper', JSON.stringify(winterParkData));
-    console.log({success})
+
+    return winterParkData;
+
 }
 
-fetchGithub();
+fetchWinterPark();
 
-module.exports = fetchGithub;
+module.exports = fetchWinterPark;
