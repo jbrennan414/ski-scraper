@@ -37,6 +37,7 @@ jobs:
           
       - name: View Directory
         run: |
+          cd /
           ls -la
           
       - name: deploy-via-scp
