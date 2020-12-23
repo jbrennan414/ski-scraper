@@ -3,7 +3,7 @@ var fetch = require('node-fetch');
 var fetchWinterPark = require("./fetch-winterpark")
 
 function checkDates(){
-    console.log("does this break if we change it?")
+    console.log("does this break if we change it? again ")
 
     let johnAvailableDays = {}
     let markAvailableDays = {}
