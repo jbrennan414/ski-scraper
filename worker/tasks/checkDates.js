@@ -48,10 +48,9 @@ function checkDates(){
 
 
     })
-    
+
     // If one of our dates is not on the list, send John or Mark an email
-   
-        
+
     //here is how we send the message 
     //bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, `Sick!  Your requested date of ${date} is available`)
 
