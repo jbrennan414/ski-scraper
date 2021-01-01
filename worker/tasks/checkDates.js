@@ -3,7 +3,6 @@ var fetch = require('node-fetch');
 var fetchWinterPark = require("./fetch-winterpark")
 
 function checkDates(){
-    console.log("does this break if we change it? again ")
 
     let johnAvailableDays = {}
     let markAvailableDays = {}
@@ -28,6 +27,7 @@ function checkDates(){
         switch (resort) {
             case "winterpark":
 
+                var winterParkDates = fetchWinterPark().then()
                 break;
 
             case "copper":
