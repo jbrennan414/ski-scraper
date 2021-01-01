@@ -42,7 +42,3 @@ jobs:
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
            key: ${{ secrets.KEY }}
-
-      - name: Start pm2 process
-        run: |
-          pm2 restart index.js
