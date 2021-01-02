@@ -81,34 +81,22 @@ async function checkDates(){
 
                 })
 
-                const message = `Horray! Your requested dates of ${availableSkiDays} are available at ${resort}`
 
-                // TODO add string interpolation below to be the user's name, all caps
-                bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, message)
+                if (availableSkiDays.length > 0){
+                    const message = `Horray! Your requested dates of ${availableSkiDays} are available at ${resort}`
+                    bot.sendMessage(userData["userData"][user]["telegram_id"], message)
+                }
+
+
 
 
             }
         }
 
     })
-
-
-
-
-    // If one of our dates is not on the list, send John or Mark an email
-
-    //here is how we send the message 
-    // bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, `Sick!  Your requested date of  is available`)
-    // bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, `Sick!  Your requested date of  is available`)
-
 }
 
-/* TODO: 
-    - Check for historic dates...only query ${today} forward
-    - Add a reasonable "lead" window...I don't want to be notified day-of, 20 minutes before lifts start
-    - Need to add redis to toggle ["hasBeenNotified"]
-    - Double check the resort data...what's the deal with that [0]?
-*/
+
 
 checkDates();
 

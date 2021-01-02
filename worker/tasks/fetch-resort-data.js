@@ -33,8 +33,8 @@ async function fetchResortData(resort) {
 
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: '/usr/bin/chromium-browser',
-    args: ['--no-sandbox']
+    executablePath: '/usr/bin/chromium-browser', // this needs to be commented out for local development
+    args: ['--no-sandbox'] // this needs to be commented out for local development
   });
 
   const page = await browser.newPage();
