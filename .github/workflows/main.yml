@@ -42,3 +42,10 @@ jobs:
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
            key: ${{ secrets.KEY }}
+      - name: Install pm2
+        run: npm i pm2
+      - name: Restart scraper
+        run: pm2 restart ski-scraper
+
+
+       
