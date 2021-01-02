@@ -1,6 +1,6 @@
 require('dotenv').config()
 var CronJob = require('cron').CronJob;
 
-const checkDates = require('./tasks/fetch-resort-data');
+const checkDates = require('./tasks/checkDates');
 
 new CronJob('*/10 * * * *', checkDates, null, true, "America/Los_Angeles");

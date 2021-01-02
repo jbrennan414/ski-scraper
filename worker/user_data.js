@@ -22,21 +22,10 @@ const userData = {
                 }
             },
             "taos": {
-                "2021-02-25": {
-                    hasBeenNotified: false
-                },
-                "2021-02-22": {
-                    hasBeenNotified: false
-                },
-                "2021-02-26": {
-                    hasBeenNotified: true
-                },
-                "2021-02-08": {
-                    hasBeenNotified: false
-                }
-            },
-            "abasin": {
                 "2021-01-29": {
+                    hasBeenNotified: false
+                },
+                "2021-02-13":{ //blackout date
                     hasBeenNotified: false
                 },
                 "2021-02-04": {
@@ -50,7 +39,7 @@ const userData = {
     },
     
     "mark": {
-        passType: "base",
+        passType: "full",
         telegram_id: process.env.MARK_TELEGRAM_CHAT_ID,
         desiredSkiDays: {
             "winterpark": {
@@ -67,11 +56,11 @@ const userData = {
                     hasBeenNotified: false
                 }
             },
-            "taos": {
-                "2021-03-25": {
+            "abasin": {
+                "2021-01-16": { // unavailable
                     hasBeenNotified: false
                 },
-                "2021-02-12": {
+                "2021-01-29": { // available
                     hasBeenNotified: false
                 },
                 "2021-02-16": {
@@ -81,17 +70,6 @@ const userData = {
                     hasBeenNotified: false
                 }
             },
-            "abasin": {
-                "2021-03-29": {
-                    hasBeenNotified: false
-                },
-                "2021-01-04": {
-                    hasBeenNotified: true
-                },
-                "2021-03-01": {
-                    hasBeenNotified: false
-                }
-            }
         }
     }
 }
