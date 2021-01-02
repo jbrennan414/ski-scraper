@@ -1,59 +1,36 @@
-require('dotenv').config();
-
-var fetch = require('node-fetch');
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TELEGRAM_TOKEN;
-const bot = new TelegramBot(token, { polling: true });
-
-var fetchWinterPark = require("./fetch-winterpark")
+// const bot = new TelegramBot(token, { polling: true });
+const userData = require('../user_data');
+const fetchResortData = require('./fetch-resort-data');
 
 function checkDates(){
 
-    let johnAvailableDays = {}
-    let markAvailableDays = {}
+    const allUsers = Object.keys(userData["userData"])
+    let resortsToFetch = [];
 
-    // Get John and Mark's Ski Days
-    const johnSkiDays = {
-        "winterpark": ["2020-12-29", "2021-01-03", "2021-01-19"],
-        "copper":["2021-02-19", "2021-03-25", "2021-04-02"]
-    }
+    // Loop over all users and get the resorts they want to ski
+    allUsers.forEach(user => {
+        const userDesiredResorts = Object.keys(userData["userData"][user]["desiredSkiDays"]);
+        // Gross 
+        userDesiredResorts.forEach(resort => {
 
-    const markSkiDays = {
-        "winterpark": ["2021-03-24", "2021-02-12", "2021-03-02"],
-        "steamboat": ["2020-12-25", "2021-04-20", "2021-04-04"]
-    }
+            if (resort && !resortsToFetch.includes(resort)){
+                resortsToFetch.push(resort);
+            }
+        })
+    });
 
-    // Fetch unavailable / closed days from the resorts specified above ^^
-    let resortsToFetch = Object.keys(johnSkiDays).concat(Object.keys(markSkiDays))
-    resortsToFetch = [...new Set(resortsToFetch)];
-
+    // Determine which resorts we need to fetch...and fetch them _once_
     resortsToFetch.forEach(resort => {
-
-        switch (resort) {
-            case "winterpark":
-
-                var winterParkDates = fetchWinterPark().then()
-                break;
-
-            case "copper":
-
-                break;
-
-            case "steamboat":
-        
-            default:
-                break;
-        }
-
-
-
-    })
+        fetchResortData(resort)
+    });
 
     // If one of our dates is not on the list, send John or Mark an email
 
     //here is how we send the message 
-    bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, `Sick!  Your requested date of  is available`)
-    bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, `Sick!  Your requested date of  is available`)
+    // bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, `Sick!  Your requested date of  is available`)
+    // bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, `Sick!  Your requested date of  is available`)
 
 }
 

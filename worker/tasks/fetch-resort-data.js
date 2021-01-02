@@ -1,8 +1,8 @@
 require('dotenv').config();
 const puppeteer = require('puppeteer');
 
-async function fetchABasin() {
 
+async function fetchResortData(resort) {
 
   const IKON_URL = "https://account.ikonpass.com/en/login?redirect_uri=/en/myaccount"
 
@@ -14,7 +14,7 @@ async function fetchABasin() {
 
 
   // To get credentials...
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch({headless: true});
   const page = await browser.newPage();
   await page.setViewport({width: 1200, height: 720});
   await page.goto(IKON_URL, { waitUntil: 'networkidle0' }); // wait until page load
@@ -31,25 +31,26 @@ async function fetchABasin() {
   // To get A-Basin's Ski Availability
   console.log("fetching a-basin...")  
   const response = await page.goto(ABASIN_URL, { waitUntil: 'networkidle0'});
-  console.log(await response.json())
 
-  console.log("fetching winter park...")
-  const winterParkResponse = await page.goto(WINTERPARK_URL, { waitUntil: 'networkidle0'});
-  console.log(await winterParkResponse.json())
+  const rawResponse = await response.json()
+  console.log(rawResponse["data"])
 
-  console.log("fetching taos...")
-  const taosResponse = await page.goto(TAOS_URL, { waitUntil: 'networkidle0'});
-  console.log(await taosResponse.json())
+  // console.log("fetching winter park...")
+  // const winterParkResponse = await page.goto(WINTERPARK_URL, { waitUntil: 'networkidle0'});
+  // console.log(await winterParkResponse.json())
+
+  // console.log("fetching taos...")
+  // const taosResponse = await page.goto(TAOS_URL, { waitUntil: 'networkidle0'});
+  // console.log(await taosResponse.json())
 
   browser.close()
 
 
 
 
-  // return response;
+  return response;
 
 }
 
-
-fetchABasin();
+module.exports = fetchResortData;
 
