@@ -31,7 +31,7 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
             # Local file path
-           local: worker/
+           local: .
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
@@ -42,10 +42,3 @@ jobs:
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
            key: ${{ secrets.KEY }}
-      - name: Install pm2
-        run: npm i pm2
-      - name: Restart scraper
-        run: pm2 restart ski-scraper
-
-
-       
