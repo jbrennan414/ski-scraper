@@ -31,19 +31,10 @@ async function fetchResortData(resort) {
 
   const RESORT_DATA_URL = `https://account.ikonpass.com/api/v2/reservation-availability/${resortID}`
 
-  let browser;
-
-  // To get credentials...
-  if (process.env.NODE_ENV == "DEVELOPMENT"){
-    browser = await puppeteer.launch({
-      headless: true,
-    });
-  } else {
-    browser = await puppeteer.launch({
-      headless: true,
-      executablePath: '/usr/bin/chromium-browser'
-    });
-  }
+  const browser = await puppeteer.launch({
+    headless: true,
+    executablePath: '/usr/bin/chromium-browser'
+  });
 
   const page = await browser.newPage();
   await page.setViewport({width: 1200, height: 720});
