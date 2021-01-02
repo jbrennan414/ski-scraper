@@ -12,18 +12,25 @@ function checkDates(){
     // Loop over all users and get the resorts they want to ski
     allUsers.forEach(user => {
         const userDesiredResorts = Object.keys(userData["userData"][user]["desiredSkiDays"]);
+
         // Gross 
         userDesiredResorts.forEach(resort => {
-
             if (resort && !resortsToFetch.includes(resort)){
                 resortsToFetch.push(resort);
             }
         })
     });
 
+
+    let resortAvailability = {}
+
     // Determine which resorts we need to fetch...and fetch them _once_
     resortsToFetch.forEach(resort => {
-        fetchResortData(resort)
+
+        fetchResortData(resort).then((availabilityData) => {
+            console.log(resort, availabilityData)
+        })
+
     });
 
     // If one of our dates is not on the list, send John or Mark an email

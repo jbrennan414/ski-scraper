@@ -7,7 +7,7 @@ const userData = {
         passType: "base",
         telegram_id: process.env.JOHN_TELEGRAM_CHAT_ID,
         desiredSkiDays: {
-            "winterPark": {
+            "winterpark": {
                 "2020-12-10": {
                     hasBeenNotified: false
                 },
@@ -53,7 +53,7 @@ const userData = {
         passType: "base",
         telegram_id: process.env.MARK_TELEGRAM_CHAT_ID,
         desiredSkiDays: {
-            "winterPark": {
+            "winterpark": {
                 "2020-19-10": {
                     hasBeenNotified: true
                 },
