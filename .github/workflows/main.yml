@@ -24,14 +24,18 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-          
+      - name: Change directories
+        run: cd /
+      - name: Where am I?
+        run: ls -lh
+        
       - name: Copy to server
         # You may pin to the exact commit or the version.
         # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
         uses: horochx/deploy-via-scp@v1.0.1
         with:
             # Local file path
-           local: .
+           local: /
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
