@@ -28,6 +28,9 @@ const userData = {
                 },
             },
             "abasin": {
+                "2021-01-27":{ // this is a test
+                    hasBeenNotified: false
+                },
                 "2021-02-06": {
                     hasBeenNotified: false
                 },
