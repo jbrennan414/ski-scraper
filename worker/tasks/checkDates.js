@@ -6,6 +6,8 @@ const fetchResortData = require('./fetch-resort-data');
 
 async function checkDates(){
 
+    console.log("checking dates...", Date())
+
     const allUsers = Object.keys(userData["userData"])
     let resortsToFetch = [];
 
