@@ -31,9 +31,20 @@ async function fetchResortData(resort) {
 
   const RESORT_DATA_URL = `https://account.ikonpass.com/api/v2/reservation-availability/${resortID}`
 
+  let browser;
 
   // To get credentials...
-  const browser = await puppeteer.launch({headless: true});
+  if (process.env.NODE_ENV == "DEVELOPMENT"){
+    browser = await puppeteer.launch({
+      headless: true,
+    });
+  } else {
+    browser = await puppeteer.launch({
+      headless: true,
+      executablePath: '/usr/bin/chromium-browser'
+    });
+  }
+
   const page = await browser.newPage();
   await page.setViewport({width: 1200, height: 720});
   await page.goto(IKON_URL, { waitUntil: 'networkidle0' }); // wait until page load
@@ -64,14 +75,6 @@ async function fetchResortData(resort) {
     blackoutDates,
     unavailableDates
   }
-
-  // console.log("fetching winter park...")
-  // const winterParkResponse = await page.goto(WINTERPARK_URL, { waitUntil: 'networkidle0'});
-  // console.log(await winterParkResponse.json())
-
-  // console.log("fetching taos...")
-  // const taosResponse = await page.goto(TAOS_URL, { waitUntil: 'networkidle0'});
-  // console.log(await taosResponse.json())
 
   browser.close()
 

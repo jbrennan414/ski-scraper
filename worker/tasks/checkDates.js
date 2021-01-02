@@ -69,7 +69,6 @@ async function checkDates(){
                     if (hasBasePass){ //check blackout dates
                         const resortBlackoutDates = unavailableSkiDays[resort]["blackoutDates"];
                         if (resortBlackoutDates.includes(day)){
-                            console.log(`Uh oh ${user}...${day} is blacked out for you at ${resort}`)
                             return
                         }
                     }
