@@ -22,6 +22,16 @@ async function fetchResortData(resort) {
       resortID = 31;
       break;
   
+    case "bigsky":
+      
+      resortID = 4;
+      break;
+
+    case "brighton":
+
+      resortID = 8;
+      break;
+
     default:
       break;
   }
