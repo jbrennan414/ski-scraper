@@ -17,7 +17,7 @@ async function fetchRedis(){
 async function checkDates(){
 
 
-    populateRedis()
+    // populateRedis()
 
     const userData = await fetchRedis()
     console.log("this is our userData...from redis", userData)
