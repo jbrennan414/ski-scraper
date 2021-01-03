@@ -84,17 +84,17 @@ const userData = {
             }
         }
     },
-    "louis": {
-        passType: "base",
-        telegram_id: process.env.LOUIS_TELEGRAM_CHAT_ID,
-        desiredSkiDays: {
-            "winterpark": {
-                "2021-02-13": {
-                    hasBeenNotified: false
-                },
-            },
-        }
-    },
+    // "louis": {
+    //     passType: "base",
+    //     telegram_id: process.env.LOUIS_TELEGRAM_CHAT_ID,
+    //     desiredSkiDays: {
+    //         "winterpark": {
+    //             "2021-02-13": {
+    //                 hasBeenNotified: false
+    //             },
+    //         },
+    //     }
+    // },
     "mark": {
         passType: "base",
         telegram_id: process.env.MARK_TELEGRAM_CHAT_ID,
