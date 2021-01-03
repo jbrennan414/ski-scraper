@@ -16,6 +16,9 @@ async function fetchRedis(){
 
 async function checkDates(){
 
+
+    populateRedis()
+
     const userData = await fetchRedis()
     console.log("this is our userData...from redis", userData)
 
@@ -102,6 +105,7 @@ async function checkDates(){
 
                 if (availableSkiDays.length > 0){
                     const message = `Hey ${user}! Your requested dates of ${availableSkiDays} are available at ${resort}`
+                    console.log(message)
                     bot.sendMessage(userData["userData"][user]["telegram_id"], message)
                 }
             }
