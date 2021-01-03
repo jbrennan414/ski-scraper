@@ -5,8 +5,7 @@ var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
 const populateRedis = require('../../api/populate_redis');
 
-// const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
-const USER_DATES = "/api/userDesiredSkiDates";
+const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
 
 async function fetchRedis(){
     const res = await fetch(USER_DATES)
