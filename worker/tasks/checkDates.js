@@ -1,10 +1,24 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TELEGRAM_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
-const userData = require('../user_data');
+var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
+const populateRedis = require('../../api/populate_redis');
+
+// const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
+const USER_DATES = "/api/userDesiredSkiDates";
+
+async function fetchRedis(){
+    const res = await fetch(USER_DATES)
+    let json = await res.json();
+
+    return json;
+}
 
 async function checkDates(){
+
+    const userData = await fetchRedis()
+    console.log("this is our userData...from redis", userData)
 
     console.log("checking dates...", Date())
 
