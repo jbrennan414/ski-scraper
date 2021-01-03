@@ -58,6 +58,12 @@ async function checkDates(){
                 
                 //TODO, I'm sure there's a better way to do this...
                 Object.keys(allDesiredSkiDaysByResort).forEach(desiredDate => {
+
+                    // add a check for dates in the past
+                    if (isPast(desiredDate)){
+                        return
+                    }
+
                     if (allDesiredSkiDaysByResort[desiredDate]["hasBeenNotified"] == false){
                         desiredDaysByResortUnnotified.push(desiredDate)
                     }
@@ -81,19 +87,26 @@ async function checkDates(){
 
                 })
 
-
                 if (availableSkiDays.length > 0){
-                    const message = `Horray! Your requested dates of ${availableSkiDays} are available at ${resort}`
+                    const message = `Hey ${user}! Your requested dates of ${availableSkiDays} are available at ${resort}`
                     bot.sendMessage(userData["userData"][user]["telegram_id"], message)
                 }
-
-
-
-
             }
         }
 
     })
+}
+
+function isPast(desiredDate){
+
+    var desiredDate = new Date(desiredDate);
+    var todaysDate = new Date()
+
+    if (desiredDate > todaysDate){
+        return false 
+    } else {
+        return true
+    }
 }
 
 
