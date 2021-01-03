@@ -57,12 +57,6 @@ const userData = {
                 }
             },
             "taos": {
-                "2021-03-06": {
-                    hasBeenNotified: false
-                },
-                "2021-03-07": {
-                    hasBeenNotified: false
-                },
                 "2021-03-13": {
                     hasBeenNotified: false
                 },
