@@ -131,6 +131,9 @@ const userData = {
                 "2021-03-07": {
                     hasBeenNotified: false
                 },
+                "2021-01-04": {
+                    hasBeenNotified: false
+                },
             }
         }
     }
