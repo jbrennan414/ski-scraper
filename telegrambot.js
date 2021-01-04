@@ -2,7 +2,8 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 
-const token = process.env.TELEGRAM_TOKEN;
+const token = process.env.TELEGRAM_TEST_TOKEN;
+//const token = process.env.TELEGRAM_TOKEN;
 let bot;
 
 // if (process.env.NODE_ENV === 'production') {
@@ -12,8 +13,10 @@ let bot;
    bot = new TelegramBot(token, { polling: true });
 // }
 
-bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
-bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
+bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
+
+//bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
+//bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
 
 bot.on('message', (msg) => {
 
