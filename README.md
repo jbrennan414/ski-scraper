@@ -9,8 +9,16 @@ Please add the following values to your .env file that you created within the wo
 
 
 /* TODO: 
-    - Check for historic dates...only query ${today} forward
     - Add a reasonable "lead" window...I don't want to be notified day-of, 20 minutes before lifts start
     - Need to add redis to toggle ["hasBeenNotified"]
-    - Double check the resort data...what's the deal with that [0]?
+    - Development bot that switches tester's telegram ID in environment variables?
+    - Fix gh action to include our api
+    - Fix gh action to run basic processes again: 
+        - Remove ski scraper repo
+        - scp it to server
+        - npm i
+        - pm2 flush
+        - pm2 start worker/index.js --name ski-scraper
+        - pm2 start api/index.js --name ski-scraper
+    - Add testing to prevent bad pushes
 */

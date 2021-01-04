@@ -66,8 +66,6 @@ async function fetchResortData(resort) {
 
   const rawResponse = await response.json()
   
-  // TODO I've gotta double check this...it looks like they're 
-  // returning two identical objects?? So I'll specify the first one below...
   const blackoutDates = rawResponse["data"][0]["blackout_dates"];
   let unavailableDates = rawResponse["data"][0]["unavailable_dates"]
   unavailableDates = unavailableDates.concat(rawResponse["data"][0]["closed_dates"])

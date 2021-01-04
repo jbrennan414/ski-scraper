@@ -72,7 +72,6 @@ async function checkDates(){
                 const allDesiredSkiDaysByResort = desiredSkiDays[resort]
                 let desiredDaysByResortUnnotified = []
                 
-                //TODO, I'm sure there's a better way to do this...
                 Object.keys(allDesiredSkiDaysByResort).forEach(desiredDate => {
 
                     // add a check for dates in the past
@@ -104,6 +103,7 @@ async function checkDates(){
                 })
 
                 if (availableSkiDays.length > 0){
+                    // TODO: Flip this is redis to "hasBeenNotified: true"
                     const message = `Hey ${user}! Your requested dates of ${availableSkiDays} are available at ${resort}`
                     console.log(message)
                     bot.sendMessage(userData["userData"][user]["telegram_id"], message)
