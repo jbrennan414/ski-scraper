@@ -42,7 +42,7 @@ async function fetchResortData(resort) {
   const RESORT_DATA_URL = `https://account.ikonpass.com/api/v2/reservation-availability/${resortID}`
 
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     executablePath: '/usr/bin/chromium-browser', // this needs to be commented out for local development
     args: ['--no-sandbox'] // this needs to be commented out for local development
   });

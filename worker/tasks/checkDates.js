@@ -1,6 +1,6 @@
-const TelegramBot = require('node-telegram-bot-api');
+// const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TELEGRAM_TOKEN;
-const bot = new TelegramBot(token, { polling: true });
+// const bot = new TelegramBot(token, { polling: true });
 var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
 const populateRedis = require('../../api/populate_redis');
@@ -18,6 +18,13 @@ async function checkDates(){
 
 
     // populateRedis()
+
+    // get our users
+
+    // get their desired resorts
+
+    // fetch those resorts' availability
+
 
     const userData = await fetchRedis()
     console.log("this is our userData...from redis", userData)
@@ -58,6 +65,8 @@ async function checkDates(){
     }
 
     let unavailableSkiDays = await getResortDates()
+
+    console.log(unavailableSkiDays)
 
     // Run through all users, check if they're ski days are blacked out...or available
     allUsers.forEach(user => {
