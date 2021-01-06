@@ -47,7 +47,7 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
            # Local file path
-           local: worker/
+           local: ../../ski-scraper
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
@@ -59,21 +59,21 @@ jobs:
            # Remote server private key
            key: ${{ secrets.KEY }}
      
-      - name: Copy api  
+   #   - name: Copy api  
         # You may pin to the exact commit or the version.
         # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
-        uses: horochx/deploy-via-scp@v1.0.1
-        with:
+    #    uses: horochx/deploy-via-scp@v1.0.1
+     #   with:
            # Local file path
-           local: api/
+      #     local: api/
            # Remote file path
-           remote: ~/projects/ski-scraper
+       #    remote: ~/projects/ski-scraper
            # Remote server address
-           host: 104.248.3.8
+ #          host: 104.248.3.8
            # Remote server port
-           port: 22
+  #         port: 22
            # Remote server user
-           user: ${{ secrets.SSH_USER }}
+   #        user: ${{ secrets.SSH_USER }}
            # Remote server private key
-           key: ${{ secrets.KEY }}
+    #       key: ${{ secrets.KEY }}
 
