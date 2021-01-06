@@ -24,7 +24,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
@@ -49,7 +48,7 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
            # Local file path
-           local: ../ski-scraper
+           local: ../../ski-scraper
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
