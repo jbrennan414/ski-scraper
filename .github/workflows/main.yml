@@ -82,6 +82,43 @@ jobs:
            user: ${{ secrets.SSH_USER }}
            # Remote server private key
            key: ${{ secrets.KEY }}
+           
+      - name: Copy package.json  
+        # You may pin to the exact commit or the version.
+        # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
+        uses: horochx/deploy-via-scp@v1.0.1
+        with:
+           # Local file path
+           local: package.json
+           # Remote file path
+           remote: ~/projects/ski-scraper/package.json
+           # Remote server address
+           host: 104.248.3.8
+           # Remote server port
+           port: 22
+           # Remote server user
+           user: ${{ secrets.SSH_USER }}
+           # Remote server private key
+           key: ${{ secrets.KEY }}
+       
+      - name: Copy telegrambot.js
+        # You may pin to the exact commit or the version.
+        # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
+        uses: horochx/deploy-via-scp@v1.0.1
+        with:
+           # Local file path
+           local: telegrambot.js
+           # Remote file path
+           remote: ~/projects/ski-scraper/telegrambot.js
+           # Remote server address
+           host: 104.248.3.8
+           # Remote server port
+           port: 22
+           # Remote server user
+           user: ${{ secrets.SSH_USER }}
+           # Remote server private key
+           key: ${{ secrets.KEY }}
+
 
       - name: Fire up new repo
         uses: appleboy/ssh-action@master
