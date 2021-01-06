@@ -27,6 +27,7 @@ jobs:
         
       - name: Make project
         run: |
+          cd ..
           ls -lh
 
       - name: Copy worker
