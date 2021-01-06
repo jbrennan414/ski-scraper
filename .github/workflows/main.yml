@@ -49,7 +49,7 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
            # Local file path
-           local: projects/ski-scraper
+           local: ../ski-scraper
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
