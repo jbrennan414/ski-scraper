@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.KEY }}
           port: 22
-          script: whoami
+          script: ls -lh
 
       - name: Copy worker
         # You may pin to the exact commit or the version.
