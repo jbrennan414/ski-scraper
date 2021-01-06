@@ -27,6 +27,7 @@ jobs:
       
       - name: Make project
         run: |
+          cd ..
           ls -lh
 
       - name: executing remote ssh commands using ssh key
