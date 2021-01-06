@@ -27,7 +27,8 @@ jobs:
         
       - name: Make project
         run: |
-          mkdir ~/projects/another-ski-scraper
+          cd ~/projects
+          mkdir another-ski-scraper
         
       - name: Copy worker
         # You may pin to the exact commit or the version.
