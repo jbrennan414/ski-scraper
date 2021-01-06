@@ -53,7 +53,7 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
            # Local file path
-           local: ./
+           local: ~/
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
