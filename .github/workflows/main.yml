@@ -34,10 +34,6 @@ jobs:
           key: ${{ secrets.KEY }}
           port: 22
           script: |
-           ls -lh
-           cd ../../
-           ls -lh
-           cd ~
            cd projects/
            rm -rf ski-scraper
 #           pm2 stop api
@@ -51,7 +47,7 @@ jobs:
         uses: horochx/deploy-via-scp@v1.0.1
         with:
            # Local file path
-           local: ../../ski-scraper
+           local: projects/ski-scraper
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
