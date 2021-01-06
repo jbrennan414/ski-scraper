@@ -27,9 +27,9 @@ jobs:
         
       - name: Make project
         run: |
-          cd ~/projects
-          mkdir another-ski-scraper
-        
+          cd ../build
+          ls -lh
+
       - name: Copy worker
         # You may pin to the exact commit or the version.
         # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
