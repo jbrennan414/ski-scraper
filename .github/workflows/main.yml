@@ -36,6 +36,7 @@ jobs:
           script: |
            cd projects/
            rm -rf ski-scraper
+           mkdir ski-scraper
 #           pm2 stop api
 #          pm2 delete api
  #          pm2 stop ski-scraper
