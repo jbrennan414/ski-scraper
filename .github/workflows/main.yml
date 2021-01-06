@@ -25,12 +25,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
-      - name: what the
-      - uses: actions/checkout@v2
-        with:
-          script: |
-            ls -lh
-            
+      - name: Make project
+        run: |
+          ls -lh
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
