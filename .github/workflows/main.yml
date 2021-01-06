@@ -30,7 +30,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: 104.248.3.8
-          username: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.KEY }}
           port: 22
           script: whoami
