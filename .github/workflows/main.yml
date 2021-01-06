@@ -33,9 +33,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.KEY }}
           port: 22
-          script: ls -lh 
-                  cd projects/ 
-                  mkdir foobar
+          script: |
+           cd projects/
+           rm -rf ski-scraper
 
       - name: Copy worker
         # You may pin to the exact commit or the version.
