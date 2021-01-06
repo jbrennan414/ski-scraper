@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: what the
+      - uses: actions/checkout@v2
         with:
           script: |
             ls -lh
