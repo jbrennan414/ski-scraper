@@ -26,8 +26,10 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: what the
-        with: |
-          ls -lh
+        with:
+          script: |
+            ls -lh
+            
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
