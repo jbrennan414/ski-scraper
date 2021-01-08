@@ -1,7 +1,11 @@
 
-async function addDate(date, resort) {
+async function addDate(date, resort, telegram_id) {
     console.log("here is the resort bbbbb", resort)
     console.log("here is the date bbbbb", date)
+    console.log("here is the chat id", telegram_id)
+    
+
+    //userData[telegram_id][desiredSkiDays][resort]
 
   let resortID;
 

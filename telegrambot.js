@@ -2,6 +2,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const addDate = require('./addDate');
+const removeDate = require('./removeDate');
 
 const token = process.env.TELEGRAM_TEST_TOKEN;
 //const token = process.env.TELEGRAM_TOKEN;
@@ -31,9 +32,22 @@ bot.on('message', (msg) => {
         var resort = msg.text.split('/')[1]
         var almostDate = msg.text.split('/')[0]
         var date = almostDate.split(' ')[1]
-        addDate(date, resort)
+        var chatID = msg.chat.id;
+        addDate(date, resort, chatID)
     
-        bot.sendMessage(msg.chat.id,"Cool.  You just added " + date + " at "+ resort)
+        bot.sendMessage(msg.chat.id,"Cool. You will be notified when " + date + " at "+ resort + " becomes available")
+    }
+
+    var remove = 'remove' //remove 2021-03-13/winterpark 
+    if (msg.text.toString().toLowerCase().includes(remove) ){
+        console.log("hhhhhh")
+        var resort = msg.text.split('/')[1]
+        var almostDate = msg.text.split('/')[0]
+        var date = almostDate.split(' ')[1]
+        var chatID = msg.chat.id;
+        removeDate(date, resort, chatID)
+    
+        bot.sendMessage(msg.chat.id,"Cool.  You will not be notified of " + date + " at "+ resort)
     }
         
     var bye = "bye";
