@@ -5,7 +5,6 @@ const token = process.env.TELEGRAM_TEST_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
-//const populateRedis = require('../../api/populate_redis');
 
 const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
 
@@ -17,9 +16,6 @@ async function fetchRedis(){
 }
 
 async function checkDates(){
-
-
-    // populateRedis()
 
     const userData = await fetchRedis()
     console.log("this is our userData...from redis", userData)
