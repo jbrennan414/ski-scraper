@@ -20,7 +20,7 @@ bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has 
 //bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
 //bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
 
-bot.on('message', (msg) => {
+bot.on('message', async (msg) => {
 
     var hi = "hi";
     if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
@@ -33,21 +33,20 @@ bot.on('message', (msg) => {
         var almostDate = msg.text.split('/')[0]
         var date = almostDate.split(' ')[1]
         var chatID = msg.chat.id;
-        addDate(date, resort, chatID)
-    
-        bot.sendMessage(msg.chat.id,"Cool. You will be notified when " + date + " at "+ resort + " becomes available")
+        var newDates = await addDate(date, resort, chatID)
+        
+        bot.sendMessage(msg.chat.id, "Date Added! Here are your current requested dates at " + resort + ":" + newDates )
     }
 
     var remove = 'remove' //remove 2021-03-13/winterpark 
     if (msg.text.toString().toLowerCase().includes(remove) ){
-        console.log("hhhhhh")
         var resort = msg.text.split('/')[1]
         var almostDate = msg.text.split('/')[0]
         var date = almostDate.split(' ')[1]
         var chatID = msg.chat.id;
-        removeDate(date, resort, chatID)
+        var newDates = await removeDate(date, resort, chatID)
     
-        bot.sendMessage(msg.chat.id,"Cool.  You will not be notified of " + date + " at "+ resort)
+        bot.sendMessage(msg.chat.id, "Date Removed! Here are your current requested dates at " + resort + ":" + newDates )
     }
         
     var bye = "bye";
