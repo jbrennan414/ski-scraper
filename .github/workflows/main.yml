@@ -40,7 +40,6 @@ jobs:
           script: |
            cd projects/ski-scraper
            rm -rf worker
-           rm -rf api
            rm telegrambot.js
            rm package.json
            mkdir ski-scraper
@@ -57,24 +56,6 @@ jobs:
         with:
            # Local file path
            local: worker/
-           # Remote file path
-           remote: ~/projects/ski-scraper
-           # Remote server address
-           host: 104.248.3.8
-           # Remote server port
-           port: 22
-           # Remote server user
-           user: ${{ secrets.SSH_USER }}
-           # Remote server private key
-           key: ${{ secrets.KEY }}
-     
-      - name: Copy api  
-        # You may pin to the exact commit or the version.
-        # uses: horochx/deploy-via-scp@bf9a636d9a475a714e375ba1cc455d1c5c861aef
-        uses: horochx/deploy-via-scp@v1.0.1
-        with:
-           # Local file path
-           local: api/
            # Remote file path
            remote: ~/projects/ski-scraper
            # Remote server address
@@ -134,6 +115,5 @@ jobs:
            cd projects/ski-scraper
            npm i
            pm2 flush logs
-           pm2 restart api
            pm2 restart ski-scraper
            
