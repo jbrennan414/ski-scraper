@@ -7,23 +7,19 @@ var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
 const { isSupportedResort, getUserDesiredSkiDates, delay, isPast } = require('../utils');
 var redis = require('redis'), client = redis.createClient();
+const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
 
-async function populateRedis() {
 
-    let redisKeys;
+async function fetchRedis(){
+    const res = await fetch(USER_DATES)
+    let json = await res.json();
 
-    client.keys('*', function (err, keys) {
-        redisKeys = keys;
-    })
-      
-    await delay()
-    return redisKeys
-
+    return json;
 }
 
 async function checkDates(){
 
-    const redisKeys = await populateRedis()
+    const redisKeys = await fetchRedis()
     let resortsToFetch = [];
     let userIDList = [];
 
@@ -121,5 +117,7 @@ async function checkDates(){
     })
 
 }
+
+checkDates()
 
 module.exports = checkDates;
