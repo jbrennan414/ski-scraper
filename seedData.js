@@ -1,23 +1,17 @@
 var redis = require('redis'), client = redis.createClient();
 const {promisify} = require('util');
 const setAsync = promisify(client.SADD).bind(client);
-const getAsync = promisify(client.SMEMBERS).bind(client);
 
-async function seedData(resort, telegram_id) {
-    // const key = telegram_id + ":" + resort
-    // const type = telegram_id + ":pass_type"
-    // let dateArray1 = ["2021-02-06","2021-02-13","2021-02-07","2021-02-14","2021-02-20","2021-02-21"]
-
-    // //we can add them one by one, with the key and then date
-    // dateArray1.map(date => await setAsync(key, date))
-    // await setAsync(type, "base")
+async function seedData() {
     
-    // //let dateArry2 = ["2021-03-13","2021-03-14","2021-03-20","2021-03-21","2021-03-27","2021-03-28"]
-    // const key = telegram_id + ":" + resort
-    // await setAsync(key,date);
-
-    // let datesForKey = await getAsync(key)
-    // return datesForKey
+    await setAsync("719487075:pass_type",'base')
+    await setAsync("719487075:winterpark","2021-02-02", "2021-02-03", "2021-02-04", "2021-02-05")
+    await setAsync("719487075:taos","2021-03-01","2021-03-02", "2021-03-03", "2021-03-04")
+    await setAsync("719487075:abasin","2021-04-01","2021-04-02","2021-04-03")
+    await setAsync("782458934:pass_type","full")
+    await setAsync("782458934:winterpark","2021-01-24","2021-01-25","2021-01-26")
+    await setAsync("782458934:taos","2021-02-01","2021-02-02","2021-02-03")
+    await setAsync("782458934:abasin","2021-03-01","2021-03-02","2021-03-03")
 
 }
 
