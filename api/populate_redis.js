@@ -30,5 +30,7 @@ const userData = require('../worker/user_data');
 
 }
 
+populateRedis()
+
 module.exports = populateRedis;
 

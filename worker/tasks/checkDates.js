@@ -106,9 +106,6 @@ async function checkDates(){
                 }
             })
 
-            console.log(`that's it! ${resort}, ${availableSkiDays}`)
-
-
             if (availableSkiDays.length > 0){
                 const message = `Hey! Your requested dates of ${availableSkiDays} are available at ${resort}`
                 console.log(message)
