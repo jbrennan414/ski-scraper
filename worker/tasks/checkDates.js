@@ -28,6 +28,7 @@ async function checkDates(){
     let userIDList = [];
 
     console.log("checking dates...", Date())
+    console.log("redis keys ===> ", redisKeys)
 
     // let's get a list of userIDs and resorts they want to ski
     redisKeys.forEach(key => {
