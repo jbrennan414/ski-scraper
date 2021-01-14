@@ -3,43 +3,50 @@ const token = process.env.TELEGRAM_TOKEN;
 const bot = new TelegramBot(token, { polling: true });
 var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
+const { isSupportedResort, getUserDesiredSkiDates, delay, isPast } = require('../utils');
+var redis = require('redis'), client = redis.createClient();
 
-const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
+async function populateRedis() {
 
-async function fetchRedis(){
-    const res = await fetch(USER_DATES)
-    let json = await res.json();
+    let redisKeys;
 
-    return json;
+    client.keys('*', function (err, keys) {
+        redisKeys = keys;
+    })
+      
+    await delay()
+    return redisKeys
+
 }
 
 async function checkDates(){
 
-    const userData = await fetchRedis()
-    console.log("this is our userData...from redis", userData)
+    const redisKeys = await populateRedis()
+    let resortsToFetch = [];
+    let userIDList = [];
 
     console.log("checking dates...", Date())
 
-    const allUsers = Object.keys(userData["userData"])
-    let resortsToFetch = [];
+    // let's get a list of userIDs and resorts they want to ski
+    redisKeys.forEach(key => {
+        const userID = key.split(":")[0];
+        const value = key.split(":")[1];
 
-    // Loop over all users and get the resorts they want to ski
-    allUsers.forEach(user => {
-        const userDesiredResorts = Object.keys(userData["userData"][user]["desiredSkiDays"]);
+        // add userID
+        if (userID && !userIDList.includes(userID)){
+            userIDList.push(userID)
+        }
 
-        // Gross 
-        userDesiredResorts.forEach(resort => {
-            if (resort && !resortsToFetch.includes(resort)){
-                resortsToFetch.push(resort);
-            }
-        })
-    });
-
+        if (value && isSupportedResort(value) && !resortsToFetch.includes(value)){
+            resortsToFetch.push(value)
+        }
+    })
 
     // This will fetch our dates for us...apparently
     // forEach is not promise-aware...it's kinda slow, 
     // but we should only do it once, which is nice
     const getResortDates = async _ => {
+
         let requestedUnavailableDays = {};
 
         const promises = resortsToFetch.map(async resort => {
@@ -50,80 +57,66 @@ async function checkDates(){
       
         await Promise.all(promises)
         return requestedUnavailableDays;
-
     }
 
     let unavailableSkiDays = await getResortDates()
+    console.log(unavailableSkiDays)
 
     // Run through all users, check if they're ski days are blacked out...or available
-    allUsers.forEach(user => {
-        let desiredSkiDays = userData["userData"][user]["desiredSkiDays"]
+    userIDList.map(async userID => {
+        const userData = await getUserDesiredSkiDates(userID)
+        let hasBasePass = false;
 
-        let hasBasePass = userData["userData"][user]["passType"] == "base"
+        let usersResorts = Object.keys(userData)
 
-        //Loop over desired ski days, check against unavailable ski days
-        for (var resort in desiredSkiDays){
-            if (desiredSkiDays.hasOwnProperty(resort)){
-
-                const allDesiredSkiDaysByResort = desiredSkiDays[resort]
-                let desiredDaysByResortUnnotified = []
-                
-                //TODO, I'm sure there's a better way to do this...
-                Object.keys(allDesiredSkiDaysByResort).forEach(desiredDate => {
-
-                    // add a check for dates in the past
-                    if (isPast(desiredDate)){
-                        return
-                    }
-
-                    if (allDesiredSkiDaysByResort[desiredDate]["hasBeenNotified"] == false){
-                        desiredDaysByResortUnnotified.push(desiredDate)
-                    }
-                })
-
-                let availableSkiDays = []
-
-                desiredDaysByResortUnnotified.forEach(day => {
-                    if (hasBasePass){ //check blackout dates
-                        const resortBlackoutDates = unavailableSkiDays[resort]["blackoutDates"];
-                        if (resortBlackoutDates.includes(day)){
-                            return
-                        }
-                    }
-
-                    const resortUnavailableDays = unavailableSkiDays[resort]["unavailableDates"]
-
-                    if (!resortUnavailableDays.includes(day)){
-                        availableSkiDays.push(day)
-                    }
-
-                })
-
-                if (availableSkiDays.length > 0){
-                    const message = `Hey ${user}! Your requested dates of ${availableSkiDays} are available at ${resort}`
-                    console.log(message)
-                    bot.sendMessage(userData["userData"][user]["telegram_id"], message)
-                }
-            }
+        // Check if this pass is basic
+        if (userData["passtype"] && userData["passtype"] == "base"){
+            hasBasePass = true;
         }
 
+
+        usersResorts.forEach(resort => {
+
+            if (resort == "passtype"){
+                return;
+            }
+            
+            let availableSkiDays = [];
+
+            console.log(`FOR ${resort}`)
+
+            // Look at desired ski dates
+            const desiredSkiDates = userData[resort];
+
+            desiredSkiDates.forEach(desiredDate => {
+                
+                // check for past dates
+                if (isPast(desiredDate)){
+                    return;
+                }
+
+                // check for blackout dates
+                if (hasBasePass && unavailableSkiDays[resort]["blackoutDates"].includes(desiredDate)){
+                    return
+                }
+
+                // check for availability
+                if (!unavailableSkiDays[resort]["unavailableDates"].includes(desiredDate)){
+                    availableSkiDays.push(desiredDate)
+                }
+            })
+
+            if (availableSkiDays.length > 0){
+                const message = `Hey! Your requested dates of ${availableSkiDays} are available at ${resort}`
+                console.log(message)
+                console.log(userID)
+                bot.sendMessage(userID, message)
+            }
+
+        })
+        
     })
+
 }
-
-function isPast(desiredDate){
-
-    var desiredDate = new Date(desiredDate);
-    var todaysDate = new Date()
-
-    if (desiredDate > todaysDate){
-        return false 
-    } else {
-        return true
-    }
-}
-
-
-
-checkDates();
 
 module.exports = checkDates;

@@ -1,6 +1,6 @@
 var redis = require('redis'), client = redis.createClient();
 
-const {promisify} = require('util');
+const {promisify, callbackify} = require('util');
 const setAsync = promisify(client.set).bind(client);
 const userData = require('../worker/user_data');
 
@@ -8,16 +8,25 @@ const userData = require('../worker/user_data');
 // cache with data 
  async function populateRedis() {
 
-    const dataObject = userData["userData"];
-    const userDataKeys = Object.keys(dataObject)
+    // This is isn't declared as `async` because it already returns a promise
+    function delay() {
+        // `delay` returns a promise
+        return new Promise(function(resolve, reject) {
+          // Only `delay` is able to resolve or reject the promise
+          setTimeout(function() {
+            resolve(42); // After 3 seconds, resolve the promise with value 42
+          }, 3000);
+        });
+    }
 
-    userDataKeys.map(async key => {
-        console.log(key)
-        console.log(dataObject[key])
-        const value = dataObject[key];
-        const success = await setAsync(key, value);
-        console.log({success})
+    let redisKeys;
+
+    client.keys('*', function (err, keys) {
+        redisKeys = keys;
     })
+      
+    await delay()
+    return redisKeys
 
 }
 
