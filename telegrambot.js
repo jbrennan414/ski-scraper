@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
-const addDate = require('./addDate');
-const removeDate = require('./removeDate');
+const { addDate } = require('./addDate');
+const { removeDate } = require('./removeDate');
 const seedData = require('./seedData');
 const seedType = require('./seedType');
 
