@@ -13,4 +13,4 @@ async function addDate(date, resort, telegram_id) {
 
 }
 
-module.exports = addDate;
+module.exports = { addDate: addDate};

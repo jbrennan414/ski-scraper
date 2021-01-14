@@ -118,6 +118,6 @@ async function checkDates(){
 
 }
 
-checkDates()
+// checkDates()
 
 module.exports = checkDates;

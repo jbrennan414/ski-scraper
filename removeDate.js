@@ -12,4 +12,4 @@ async function removeDate(date, resort, telegram_id) {
 
 }
 
-module.exports = removeDate;
+module.exports = { removeDate: removeDate };
