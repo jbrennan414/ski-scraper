@@ -1,12 +1,10 @@
-// const TelegramBot = require('node-telegram-bot-api');
-// const token = process.env.TELEGRAM_TOKEN;
-// const bot = new TelegramBot(token, { polling: true });
+const TelegramBot = require('node-telegram-bot-api');
+const token = process.env.TELEGRAM_TOKEN;
+const bot = new TelegramBot(token, { polling: true });
 var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
 const { isSupportedResort, getUserDesiredSkiDates, delay, isPast } = require('../utils');
 var redis = require('redis'), client = redis.createClient();
-
-const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
 
 async function populateRedis() {
 
@@ -114,13 +112,14 @@ async function checkDates(){
             if (availableSkiDays.length > 0){
                 const message = `Hey! Your requested dates of ${availableSkiDays} are available at ${resort}`
                 console.log(message)
-                // bot.sendMessage(userID, message)
+                console.log(userID)
+                bot.sendMessage(userID, message)
             }
 
         })
         
     })
 
-checkDates();
+}
 
 module.exports = checkDates;
