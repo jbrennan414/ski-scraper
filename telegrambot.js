@@ -1,11 +1,12 @@
-//this file doesn't really do anything because I don't know how to run it :)
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const addDate = require('./addDate');
 const removeDate = require('./removeDate');
+const seedData = require('./seedData');
+const seedType = require('./seedType');
 
-const token = process.env.TELEGRAM_TEST_TOKEN;
-//const token = process.env.TELEGRAM_TOKEN;
+//const token = process.env.TELEGRAM_TEST_TOKEN;
+const token = process.env.TELEGRAM_TOKEN;
 let bot;
 
 // if (process.env.NODE_ENV === 'production') {
@@ -15,10 +16,10 @@ let bot;
    bot = new TelegramBot(token, { polling: true });
 // }
 
-bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
+//bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
 
-//bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
-//bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
+bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
+bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
 
 bot.on('message', async (msg) => {
 
@@ -48,6 +49,28 @@ bot.on('message', async (msg) => {
     
         bot.sendMessage(msg.chat.id, "Date Removed! Here are your current requested dates at " + resort + ":" + newDates )
     }
+    
+    //this will seed test data.  Uncomment this for local development
+    // var seed = 'seed' //seed winterpark
+    // if (msg.text.toString().toLowerCase().includes(seed) ){
+    //     var resort = almostDate.split(' ')[1]
+    //     console.log("resort", resort)
+
+    //     var newDates = await seedData(resort, chatID)
+    
+    //     bot.sendMessage(msg.chat.id, "Date Seeded! Here is the current data :" + newDates )
+    // }
+
+    //this will seed test data.  Uncomment this for local development
+    // var seed = 'seed' //seed 
+    // if (msg.text.toString().toLowerCase().includes(seed) ){
+    //     var resort = almostDate.split(' ')[1]
+    //     console.log("resort", resort)
+
+    //     var newDates = await seedType(chatID)
+    
+    //     bot.sendMessage(msg.chat.id, "Dates Seeded.")
+    // }
         
     var bye = "bye";
     if (msg.text.toString().toLowerCase().includes(bye)) {
