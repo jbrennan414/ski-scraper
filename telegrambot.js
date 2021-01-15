@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const { addDate } = require('./addDate');
 const { removeDate } = require('./removeDate');
-const seedData = require('./seedData');
+// const seedData = require('./seedData');
 
 // const token = process.env.TELEGRAM_TEST_TOKEN;
 const token = process.env.TELEGRAM_TOKEN;
@@ -78,11 +78,11 @@ bot.on('message', async (msg) => {
     // }
 
     //this will seed test data.  Uncomment this for local development
-    var seed = 'seed' //seed 
-    if (msg.text.toString().toLowerCase().includes(seed) ){
-        await seedData()
-        bot.sendMessage(msg.chat.id, "Dates Seeded. " + wassup)
-    }
+    // var seed = 'seed' //seed 
+    // if (msg.text.toString().toLowerCase().includes(seed) ){
+    //     await seedData()
+    //     bot.sendMessage(msg.chat.id, "Dates Seeded. " + wassup)
+    // }
         
 
 
