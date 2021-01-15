@@ -5,6 +5,10 @@ const getAsync = promisify(client.SMEMBERS).bind(client);
 
 async function addDate(date, resort, telegram_id) {
 
+    if (!resort || !date){
+        return;
+    }
+
     const key = telegram_id + ":" + resort
     await setAsync(key,date);
 
