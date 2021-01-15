@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
 const { addDate } = require('./addDate');
 const { removeDate } = require('./removeDate');
-// const seedData = require('./seedData');
+const seedData = require('./seedData');
 
 // const token = process.env.TELEGRAM_TEST_TOKEN;
 const token = process.env.TELEGRAM_TOKEN;
@@ -25,6 +25,7 @@ bot.on('message', async (msg) => {
     var hi = "hi";
     var add = 'add' //add 2021-03-13/winterpark 
     var remove = 'remove' //remove 2021-03-13/winterpark 
+    var seed = 'seed'
 
     //They said hi
     if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
@@ -59,6 +60,10 @@ bot.on('message', async (msg) => {
         var newDates = await removeDate(date, resort, chatID)
     
         return bot.sendMessage(msg.chat.id, "Date Removed! Here are your current requested dates at " + resort + ":" + newDates )
+
+    } else if (msg.text.toString().toLowerCase().includes(seed)){
+        await seedData()
+        bot.sendMessage(msg.chat.id, "Dates Seeded. ")
     } else {
         return bot.sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
 
@@ -66,25 +71,6 @@ bot.on('message', async (msg) => {
     
 });
     
-    //this will seed test data.  Uncomment this for local development
-    // var seed = 'seed' //seed winterpark
-    // if (msg.text.toString().toLowerCase().includes(seed) ){
-    //     var resort = almostDate.split(' ')[1]
-    //     console.log("resort", resort)
-
-    //     var newDates = await seedData(resort, chatID)
-    
-    //     bot.sendMessage(msg.chat.id, "Date Seeded! Here is the current data :" + newDates )
-    // }
-
-    //this will seed test data.  Uncomment this for local development
-    // var seed = 'seed' //seed 
-    // if (msg.text.toString().toLowerCase().includes(seed) ){
-    //     await seedData()
-    //     bot.sendMessage(msg.chat.id, "Dates Seeded. " + wassup)
-    // }
-        
-
 
     bot.onText(/\/start/, (msg) => {
 
