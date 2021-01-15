@@ -3,9 +3,10 @@ require('dotenv').config();
 const { addDate } = require('./addDate');
 const { removeDate } = require('./removeDate');
 const seedData = require('./seedData');
+const { isSupportedResort } = require('./worker/utils');
 
 // const token = process.env.TELEGRAM_TEST_TOKEN;
-const token = process.env.TELEGRAM_TOKEN;
+const token = process.env.TELEGRAM_TEST_TOKEN;
 let bot;
 
 // if (process.env.NODE_ENV === 'production') {
@@ -17,7 +18,7 @@ let bot;
 
 //bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
 
-bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
+// bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
 bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
 
 bot.on('message', async (msg) => {
@@ -26,6 +27,7 @@ bot.on('message', async (msg) => {
     var add = 'add' //add 2021-03-13/winterpark 
     var remove = 'remove' //remove 2021-03-13/winterpark 
     var seed = 'seed'
+    var supportedResorts = "taos, winterpark, abasin, bigsky, brighton";
 
     //They said hi
     if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
@@ -38,8 +40,14 @@ bot.on('message', async (msg) => {
             return bot.sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
         }
 
-        var resort = msg.text.split('/')[1]
-        var almostDate = msg.text.split('/')[0]
+        let parsedMessage = msg.text.toString().toLowerCase()
+
+        var resort = parsedMessage.split('/')[1].replace(/\s/g, '')
+        if (!isSupportedResort(resort)){
+            return bot.sendMessage(msg.chat.id, `Oops, we don't recognize that resort, we only support: ${supportedResorts} right now`);
+        }
+
+        var almostDate = parsedMessage.split('/')[0]
         var date = almostDate.split(' ')[1]
         var chatID = msg.chat.id;
         var newDates = await addDate(date, resort, chatID)
@@ -53,8 +61,14 @@ bot.on('message', async (msg) => {
             return bot.sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
         }
 
-        var resort = msg.text.split('/')[1]
-        var almostDate = msg.text.split('/')[0]
+        let parsedMessage = msg.text.toString().toLowerCase()
+
+        var resort = parsedMessage.split('/')[1].replace(/\s/g, '') //remove any spaces
+        if (!isSupportedResort(resort)){
+            return bot.sendMessage(msg.chat.id, `Oops, we don't recognize that resort yet, we only support: ${supportedResorts} right now`);
+        }
+        
+        var almostDate = parsedMessage.split('/')[0]
         var date = almostDate.split(' ')[1]
         var chatID = msg.chat.id;
         var newDates = await removeDate(date, resort, chatID)
