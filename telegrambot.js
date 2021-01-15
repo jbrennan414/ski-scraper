@@ -6,7 +6,7 @@ const seedData = require('./seedData');
 const { isSupportedResort } = require('./worker/utils');
 
 // const token = process.env.TELEGRAM_TEST_TOKEN;
-const token = process.env.TELEGRAM_TEST_TOKEN;
+const token = process.env.TELEGRAM_TOKEN;
 let bot;
 
 // if (process.env.NODE_ENV === 'production') {
