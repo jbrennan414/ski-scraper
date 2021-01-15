@@ -28,9 +28,15 @@ bot.on('message', async (msg) => {
     var remove = 'remove' //remove 2021-03-13/winterpark 
     var seed = 'seed'
     var supportedResorts = "taos, winterpark, abasin, bigsky, brighton";
+    var welcomeMessage = "Hi! Please text me to add or remove your ski dates. We check Ikon every 15 minutes from 6 AM-10 PM. \n\nPlease use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark` \n\nSee you on the slopes! "
 
-    //They said hi
-    if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
+    // they started
+    if (msg.text === '/start'){
+
+        return bot.sendMessage(msg.chat.id, welcomeMessage);
+
+    //They said hi            
+    } else if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
         return bot.sendMessage(msg.chat.id,"Thanks for using Ski Scraper!  Here is your chat ID" + msg.chat.id);
 
     // user wants to add 
@@ -86,11 +92,6 @@ bot.on('message', async (msg) => {
 });
     
 
-    bot.onText(/\/start/, (msg) => {
-
-        bot.sendMessage(msg.chat.id, "Welcome");
-            
-    });
       
 
     function isValidMessage(message){
