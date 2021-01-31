@@ -1,11 +1,7 @@
-const TelegramBot = require('node-telegram-bot-api');
-const token = process.env.TELEGRAM_TOKEN;
-// const token = process.env.TELEGRAM_TEST_TOKEN;
-
-const bot = new TelegramBot(token, { polling: true });
 var fetch = require('node-fetch');
 const fetchResortData = require('./fetch-resort-data');
 const { isSupportedResort, getUserDesiredSkiDates, delay, isPast } = require('../utils');
+const { sendMessage } = require("../../telegrambot");
 var redis = require('redis'), client = redis.createClient();
 const USER_DATES = "http://localhost:3001/api/userDesiredSkiDates"; // ok this works for local development
 
@@ -87,6 +83,10 @@ async function checkDates(){
             // Look at desired ski dates
             const desiredSkiDates = userData[resort];
 
+            if (!desiredSkiDates){
+                return;
+            }
+
             desiredSkiDates.forEach(desiredDate => {
                 
                 // check for past dates
@@ -109,7 +109,7 @@ async function checkDates(){
                 const message = `Hey! Your requested dates of ${availableSkiDays} are available at ${resort}`
                 console.log(message)
                 console.log(userID)
-                bot.sendMessage(userID, message)
+                sendMessage(userID, message)
             }
 
         })

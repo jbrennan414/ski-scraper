@@ -7,18 +7,9 @@ const { isSupportedResort } = require('./worker/utils');
 
 // const token = process.env.TELEGRAM_TEST_TOKEN;
 const token = process.env.TELEGRAM_TOKEN;
-let bot;
+let bot = new TelegramBot(token, { polling: true });
 
-// if (process.env.NODE_ENV === 'production') {
-//    bot = new TelegramBot(token);
-//    bot.setWebHook(process.env.HEROKU_URL + bot.token);
-// } else {
-   bot = new TelegramBot(token, { polling: true });
-// }
-
-//bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
-
-// bot.sendMessage(process.env.MARK_TELEGRAM_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
+// bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
 bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
 
 bot.on('message', async (msg) => {
@@ -33,24 +24,24 @@ bot.on('message', async (msg) => {
     // they started
     if (msg.text === '/start'){
 
-        return bot.sendMessage(msg.chat.id, welcomeMessage);
+        return sendMessage(msg.chat.id, welcomeMessage);
 
     //They said hi            
     } else if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
-        return bot.sendMessage(msg.chat.id,"Thanks for using Ski Scraper!  Here is your chat ID" + msg.chat.id);
+        return sendMessage(msg.chat.id,"Thanks for using Ski Scraper!  Here is your chat ID" + msg.chat.id);
 
     // user wants to add 
     } else if (msg.text.toString().toLowerCase().includes(add)){
 
         if (!isValidMessage(msg.text)){
-            return bot.sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
+            return sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
         }
 
         let parsedMessage = msg.text.toString().toLowerCase()
 
         var resort = parsedMessage.split('/')[1].replace(/\s/g, '')
         if (!isSupportedResort(resort)){
-            return bot.sendMessage(msg.chat.id, `Oops, we don't recognize that resort, we only support: ${supportedResorts} right now`);
+            return sendMessage(msg.chat.id, `Oops, we don't recognize that resort, we only support: ${supportedResorts} right now`);
         }
 
         var almostDate = parsedMessage.split('/')[0]
@@ -58,20 +49,20 @@ bot.on('message', async (msg) => {
         var chatID = msg.chat.id;
         var newDates = await addDate(date, resort, chatID)
         
-        return bot.sendMessage(msg.chat.id, "Date Added! Here are your current requested dates at " + resort + ":" + newDates )
+        return sendMessage(msg.chat.id, "Date Added! Here are your current requested dates at " + resort + ":" + newDates )
 
     // user wants to remove
     } else if (msg.text.toString().toLowerCase().includes(remove)){
 
         if (!isValidMessage(msg.text)){
-            return bot.sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
+            return sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
         }
 
         let parsedMessage = msg.text.toString().toLowerCase()
 
         var resort = parsedMessage.split('/')[1].replace(/\s/g, '') //remove any spaces
         if (!isSupportedResort(resort)){
-            return bot.sendMessage(msg.chat.id, `Oops, we don't recognize that resort yet, we only support: ${supportedResorts} right now`);
+            return sendMessage(msg.chat.id, `Oops, we don't recognize that resort yet, we only support: ${supportedResorts} right now`);
         }
         
         var almostDate = parsedMessage.split('/')[0]
@@ -79,30 +70,33 @@ bot.on('message', async (msg) => {
         var chatID = msg.chat.id;
         var newDates = await removeDate(date, resort, chatID)
     
-        return bot.sendMessage(msg.chat.id, "Date Removed! Here are your current requested dates at " + resort + ":" + newDates )
+        return sendMessage(msg.chat.id, "Date Removed! Here are your current requested dates at " + resort + ":" + newDates )
 
     } else if (msg.text.toString().toLowerCase().includes(seed)){
         await seedData()
-        bot.sendMessage(msg.chat.id, "Dates Seeded. ")
+        sendMessage(msg.chat.id, "Dates Seeded. ")
     } else {
-        return bot.sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
+        return sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
 
     }
     
 });
-    
 
-      
+function isValidMessage(message){
 
-    function isValidMessage(message){
+    var resort = message.split('/')[1]
+    var almostDate = message.split('/')[0]
+    var date = almostDate.split(' ')[1]
 
-        var resort = message.split('/')[1]
-        var almostDate = message.split('/')[0]
-        var date = almostDate.split(' ')[1]
-
-        if (resort && almostDate && date){
-            return true
-        } else {
-            return false
-        }
+    if (resort && almostDate && date){
+        return true
+    } else {
+        return false
     }
+}
+
+function sendMessage(userID, message){
+    bot.sendMessage(userID, message)
+}
+
+module.exports = { sendMessage: sendMessage}
