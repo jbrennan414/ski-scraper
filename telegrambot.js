@@ -5,28 +5,13 @@ const { removeDate } = require('./removeDate');
 const seedData = require('./seedData');
 require('dotenv').config();
 
-const bot = new Telegraf(process.env.TELEGRAM_TEST_TOKEN)
-
-// Mark...let's just leave this here for posterity 
-
-// bot.start((ctx) => ctx.reply('Welcome'))
-// bot.help((ctx) => ctx.reply('Send me a sticker'))
-// bot.on('sticker', (ctx) => ctx.reply('👍'))
-// bot.hears('hi', (ctx) => ctx.reply('Hey there'))
-// bot.hears(isMatch, (ctx) => ctx.reply('hey bruh'))
-// bot.launch()
+// const bot = new Telegraf(process.env.TELEGRAM_TEST_TOKEN)
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN)
 
 const welcomeMessage = "Hi! Please text me to add or remove your ski dates. We check Ikon every 15 minutes from 6 AM-10 PM. \n\nPlease use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark` \n\nSee you on the slopes! ";
 const supportedResorts = "taos, winterpark, abasin, bigsky, brighton";
 const wrongResortMessage = `Oops, we don't recognize that resort, we only support: ${supportedResorts} right now`;
 const generalErrorMessage = "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`";
-
-
-function sendMessage(userID, message){
-    bot.Telegraf.sendMessage(userID, message);
-
-}
-
 
 bot.on('message', async context => {
     const { reply, update } = context;
@@ -109,5 +94,9 @@ function isValidMessage(message){
     }
 }
 
+
+function sendMessage(userID, message){
+    bot.telegram.sendMessage(userID, message);
+}
 
 module.exports = { sendMessage: sendMessage}
