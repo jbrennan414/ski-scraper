@@ -1,86 +1,85 @@
-const TelegramBot = require('node-telegram-bot-api');
-require('dotenv').config();
+const { Telegraf } = require('telegraf')
+const { isSupportedResort } = require('./worker/utils');
 const { addDate } = require('./addDate');
 const { removeDate } = require('./removeDate');
 const seedData = require('./seedData');
-const { isSupportedResort } = require('./worker/utils');
+require('dotenv').config();
 
-// const token = process.env.TELEGRAM_TEST_TOKEN;
-const token = process.env.TELEGRAM_TOKEN;
-let bot = new TelegramBot(token, { polling: true });
+// const bot = new Telegraf(process.env.TELEGRAM_TEST_TOKEN)
+const bot = new Telegraf(process.env.TELEGRAM_TOKEN)
 
-// bot.sendMessage(process.env.TELEGRAM_TEST_CHAT_ID, "Hi Mark Ski Scraper Bot has started!")
-bot.sendMessage(process.env.JOHN_TELEGRAM_CHAT_ID, "Hi John Ski Scraper Bot has started!")
+const welcomeMessage = "Hi! Please text me to add or remove your ski dates. We check Ikon every 15 minutes from 6 AM-10 PM. \n\nPlease use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark` \n\nSee you on the slopes! ";
+const supportedResorts = "taos, winterpark, abasin, bigsky, brighton";
+const wrongResortMessage = `Oops, we don't recognize that resort, we only support: ${supportedResorts} right now`;
+const generalErrorMessage = "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`";
 
-bot.on('message', async (msg) => {
+bot.on('message', async context => {
+    const { reply, update } = context;
+    const { message } = update;
+    const { text } = message;
 
-    var hi = "hi";
-    var add = 'add' //add 2021-03-13/winterpark 
-    var remove = 'remove' //remove 2021-03-13/winterpark 
-    var seed = 'seed'
-    var supportedResorts = "taos, winterpark, abasin, bigsky, brighton";
-    var welcomeMessage = "Hi! Please text me to add or remove your ski dates. We check Ikon every 15 minutes from 6 AM-10 PM. \n\nPlease use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark` \n\nSee you on the slopes! "
+    const parsedMessage = text.toString().toLowerCase()
+
+    const userID = context.message.from.id;
+    const hiMessage = `Thanks for using Ski Scraper!  Here is your chat ID: ${userID}`;
 
     // they started
-    if (msg.text === '/start'){
+    if (parsedMessage === "/start"){
+        context.reply(welcomeMessage)
+    // they said hi
+    } else if (parsedMessage === 'hi'){
+        context.reply(hiMessage);
+    // they said add
+    } else if (text.includes('add')) {
 
-        return sendMessage(msg.chat.id, welcomeMessage);
-
-    //They said hi            
-    } else if (msg.text.toString().toLowerCase().indexOf(hi) === 0) {
-        return sendMessage(msg.chat.id,"Thanks for using Ski Scraper!  Here is your chat ID" + msg.chat.id);
-
-    // user wants to add 
-    } else if (msg.text.toString().toLowerCase().includes(add)){
-
-        if (!isValidMessage(msg.text)){
-            return sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
+        if (!isValidMessage(parsedMessage)){
+            return context.reply(generalErrorMessage);
         }
 
-        let parsedMessage = msg.text.toString().toLowerCase()
+        var resort = parsedMessage.split('/')[1].replace(/\s/g, '');
+
+        if (!isSupportedResort(resort)){
+            return context.reply(wrongResortMessage);
+        }
+        
+        var almostDate = parsedMessage.split('/')[0];
+        var date = almostDate.split(' ')[1];
+        var newDates = await addDate(date, resort, userID);
+
+        return context.reply(`Date Added! Here are your current requested dates at ${resort}: ${newDates}`)
+    // they said remove
+    } else if (text.includes('remove')){
+
+        if (!isValidMessage(parsedMessage)){
+            return context.reply(generalErrorMessage);
+        }
 
         var resort = parsedMessage.split('/')[1].replace(/\s/g, '')
-        if (!isSupportedResort(resort)){
-            return sendMessage(msg.chat.id, `Oops, we don't recognize that resort, we only support: ${supportedResorts} right now`);
-        }
-
-        var almostDate = parsedMessage.split('/')[0]
-        var date = almostDate.split(' ')[1]
-        var chatID = msg.chat.id;
-        var newDates = await addDate(date, resort, chatID)
         
-        return sendMessage(msg.chat.id, "Date Added! Here are your current requested dates at " + resort + ":" + newDates )
-
-    // user wants to remove
-    } else if (msg.text.toString().toLowerCase().includes(remove)){
-
-        if (!isValidMessage(msg.text)){
-            return sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
-        }
-
-        let parsedMessage = msg.text.toString().toLowerCase()
-
-        var resort = parsedMessage.split('/')[1].replace(/\s/g, '') //remove any spaces
         if (!isSupportedResort(resort)){
-            return sendMessage(msg.chat.id, `Oops, we don't recognize that resort yet, we only support: ${supportedResorts} right now`);
+            return context.reply(wrongResortMessage);
         }
-        
-        var almostDate = parsedMessage.split('/')[0]
-        var date = almostDate.split(' ')[1]
-        var chatID = msg.chat.id;
-        var newDates = await removeDate(date, resort, chatID)
-    
-        return sendMessage(msg.chat.id, "Date Removed! Here are your current requested dates at " + resort + ":" + newDates )
 
-    } else if (msg.text.toString().toLowerCase().includes(seed)){
-        await seedData()
-        sendMessage(msg.chat.id, "Dates Seeded. ")
+        var almostDate = parsedMessage.split('/')[0];
+        var date = almostDate.split(' ')[1];
+        var newDates = await removeDate(date, resort, userID);
+
+        return context.reply(`Date Removed! Here are your current requested dates at ${resort}: ${newDates}`)
+
+    } else if (text === "seed"){
+        await seedData();
+        return context.reply("Dates seeded");
     } else {
-        return sendMessage(msg.chat.id, "Oops, wrong format, please use the following format: `add 2021-03-13/winterpark` OR `remove 2021-03-13/winterpark`");
-
+        return context.reply(generalErrorMessage);
     }
-    
-});
+
+})
+
+bot.launch()
+
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'))
+process.once('SIGTERM', () => bot.stop('SIGTERM'))
 
 function isValidMessage(message){
 
@@ -95,8 +94,9 @@ function isValidMessage(message){
     }
 }
 
+
 function sendMessage(userID, message){
-    bot.sendMessage(userID, message)
+    bot.telegram.sendMessage(userID, message);
 }
 
 module.exports = { sendMessage: sendMessage}
