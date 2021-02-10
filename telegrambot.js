@@ -30,7 +30,7 @@ bot.on('message', async context => {
     } else if (parsedMessage === 'hi'){
         context.reply(hiMessage);
     // they said add
-    } else if (text.includes('add')) {
+    } else if (text.includes('add') || text.includes("Add")) {
 
         if (!isValidMessage(parsedMessage)){
             return context.reply(generalErrorMessage);
@@ -48,7 +48,7 @@ bot.on('message', async context => {
 
         return context.reply(`Date Added! Here are your current requested dates at ${resort}: ${newDates}`)
     // they said remove
-    } else if (text.includes('remove')){
+    } else if (text.includes('remove') || text.includes("Remove")){
 
         if (!isValidMessage(parsedMessage)){
             return context.reply(generalErrorMessage);
